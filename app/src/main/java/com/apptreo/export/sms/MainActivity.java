@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
         writer.endArray();
         writer.close();
     }
-    private boolean
+
 
     public void export(int exportType){
 
