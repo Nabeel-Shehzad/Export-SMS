@@ -1,5 +1,9 @@
 package com.apptreo.export.sms;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class Message {
     private int id;
     private String address;
@@ -12,7 +16,9 @@ public class Message {
         this.address = address;
         this.type = type;
         this.body = body;
-        this.date = date;
+        DateFormat obj = new SimpleDateFormat("dd MMM yyyy HH:mm:ss:SSS Z");
+        Date res = new Date(date);
+        this.date = obj.format(res);
     }
 
     public int getId() {
