@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Export SMS</string>
+    <string name="websiteLink" >
+        <a href="https://nabeelshehzad.com/">
+            Powered by Apptreo: Nabeelshehzad.com
+        </a>
+    </string>
 </resources>
