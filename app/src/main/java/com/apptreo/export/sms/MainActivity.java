@@ -13,19 +13,32 @@ import android.os.Environment;
 import android.provider.Telephony;
 import android.text.method.LinkMovementMethod;
 import android.util.JsonWriter;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import org.json.JSONObject;
+
 import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Scanner;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -130,13 +143,25 @@ public class MainActivity extends AppCompatActivity {
             this.makeJson(messageCursor,
                     new OutputStreamWriter(
                             new BufferedOutputStream(
-                                    new FileOutputStream(exportFile)), "UTF-8"));
+                                    new FileOutputStream(exportFile)), StandardCharsets.UTF_8));
             messageCursor.close();
         }catch (IOException e){
             this.showMessage("Error while exporting messages: "+e.toString());
             return;
         }
-
+        readJsonData(exportFile);
         this.showMessage("Messages exported");
+    }
+
+    private void readJsonData(File exportPath) {
+        try {
+            String jsonFileString = Utils.getJsonFromAssets(getApplicationContext(), exportPath.getAbsolutePath());
+            Gson gson = new Gson();
+            Type listUserType = new TypeToken<List<Message>>() { }.getType();
+            List<Message> messages = gson.fromJson(jsonFileString, listUserType);
+
+        }catch (Exception e){
+            this.showMessage("Error while exporting messages: "+e.toString());
+        }
     }
 }
