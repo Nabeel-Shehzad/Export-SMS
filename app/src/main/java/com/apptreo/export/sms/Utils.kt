@@ -1,26 +1,24 @@
-package com.apptreo.export.sms;
+package com.apptreo.export.sms
 
-import android.content.Context;
+import android.content.Context
+import java.io.FileInputStream
+import java.io.IOException
+import java.io.InputStream
+import java.nio.charset.StandardCharsets
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-
-public class Utils {
-    static String getJsonFromAssets(Context context, String fileName) {
-        String jsonString;
-        try {
-            InputStream is = new FileInputStream(fileName);
-            int size = is.available();
-            byte[] buffer = new byte[size];
-            is.read(buffer);
-            is.close();
-            jsonString = new String(buffer, StandardCharsets.UTF_8);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
+object Utils {
+    fun getJsonFromAssets(context: Context?, fileName: String?): String {
+        val jsonString: String = try {
+            val `is`: InputStream = FileInputStream(fileName)
+            val size = `is`.available()
+            val buffer = ByteArray(size)
+            `is`.read(buffer)
+            `is`.close()
+            String(buffer, StandardCharsets.UTF_8)
+        } catch (e: IOException) {
+            e.printStackTrace()
+            return ""
         }
-        return jsonString;
+        return jsonString
     }
 }

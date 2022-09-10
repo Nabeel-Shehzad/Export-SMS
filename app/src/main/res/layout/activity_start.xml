@@ -5,21 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="10dp"
-    tools:context=".MainActivity">
-
+    tools:context=".Start">
     <Button
         android:id="@+id/exportSmsButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Export Messages"
+        android:text="Receive Messages"
         android:layout_centerVertical="true"/>
 
-    <TextView
-        android:id="@+id/link"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_alignParentBottom="true"
-        android:gravity="end"
-        android:textStyle="bold"
-        android:text="@string/websiteLink" />
+
 </RelativeLayout>
